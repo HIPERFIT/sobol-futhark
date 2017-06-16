@@ -66,11 +66,13 @@ val () = case lines of
               ; println "-- https://github.com/HIPERFIT/sobol-futhark"
               ; println ""
               ; println "module sobol_dir : {"
-              ; println "  val m : [][]u32"
-              ; println "  val a : []u32"
-              ; println "  val s : []i32"
+              ; println "  val n : i32"
+              ; println "  val m : [n][]u32"
+              ; println "  val a : [n]u32"
+              ; println "  val s : [n]i32"
 (*              ; println "  val d : []u32" *)
               ; println "} = {"
+              ; println("  let n : i32 = " ^ Int.toString N)
               ; println("  let m : [" ^ Int.toString N ^ "][" ^ Int.toString sz ^ "]u32 = \n    " ^ m)
               ; println("  let a : [" ^ Int.toString N ^ "]u32 = \n    " ^ a)
               ; println("  let s : [" ^ Int.toString N ^ "]i32 = \n    " ^ s)

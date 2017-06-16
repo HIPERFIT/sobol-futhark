@@ -17,9 +17,9 @@ mlkit -o sobol_conv sobol_conv.sml
 [wrote X86 code file:	MLB/RI_GC/sobol_conv.sml.s]
 [wrote X86 code file:	MLB/RI_GC/base-link_objects.s]
 [wrote executable file:	sobol_conv]
-./sobol_conv < new-joe-kuo-6.21201 > new-joe-kuo-6.21201.fut
-./sobol_conv 50 < new-joe-kuo-6.21201 > new-joe-kuo-6.50.fut
-./sobol_conv 1000 < new-joe-kuo-6.21201 > new-joe-kuo-6.1000.fut
+./sobol_conv < new-joe-kuo-6.21201 > sobol-dir-21201.fut
+./sobol_conv 50 < new-joe-kuo-6.21201 > sobol-dir-50.fut
+./sobol_conv 1000 < new-joe-kuo-6.21201 > sobol-dir-1000.fut
 bash-3.2$
 ````
 
