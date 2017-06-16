@@ -1,9 +1,26 @@
+(* Copyright 2017, Martin Elsman, HIPERFIT; MIT License *)
+
 fun qq s = "'" ^ s ^ "'"
 fun println s = print (s ^ "\n")
 
 fun die s =
-    (println ("Error: " ^ s);
+    (println ("Input Error: " ^ s);
      OS.Process.exit ~1)
+
+fun usage () =
+    (println ("Usage: " ^ CommandLine.name() ^ " [MAX]\n  MAX: smaller than max dimensions in the data set.\n");
+     OS.Process.exit ~1)
+
+val MAX_DIMENSIONS =
+    case CommandLine.arguments() of
+        [s] =>
+        (case Int.fromString s of
+             SOME n =>
+             if n > 0 then SOME n
+             else usage()
+           | NONE => usage())
+      | nil => NONE
+      | _ => usage ()
 
 type num = string
 type line = {d:num,s:num,a:num,m:num list}
@@ -33,7 +50,8 @@ fun ppNumLine xs = "[" ^ String.concatWith ", " (List.map ppNum xs) ^ "]"
 val () = case lines of
              _ :: lines =>
              let val ls = List.map parseLine lines
-                 val ls = List.take (ls, 50)
+                 val ls = case MAX_DIMENSIONS of SOME lines => List.take (ls, lines)
+                                               | NONE => ls
                  val N = length ls
                  val sz = max 0 (List.map (length o #m) ls)
                  val ls = List.map (fn {d,s,a,m} => {d=d,s=s,a=a,m=pad_ns sz m}) ls
@@ -41,7 +59,13 @@ val () = case lines of
                  val a = "[" ^ String.concatWith ",\n     " (List.map (ppNum o #a) ls) ^ "]"
                  val d = "[" ^ String.concatWith ",\n     " (List.map (ppNum o #d) ls) ^ "]"
                  val s = "[" ^ String.concatWith ",\n     " (List.map (ppInt o #s) ls) ^ "]"
-             in println "module sobol_dir : {"
+             in println "-- Auto-generated file! Based on the Joe and Kuo sets of initial"
+              ; println "-- direction numbers; see http://web.maths.unsw.edu.au/~fkuo/sobol/"
+              ; println "--"
+              ; println "-- Generated using the sobol_conv tool available from"
+              ; println "-- https://github.com/HIPERFIT/sobol-futhark"
+              ; println ""
+              ; println "module sobol_dir : {"
               ; println "  val m : [][]u32"
               ; println "  val a : []u32"
               ; println "  val s : []i32"
